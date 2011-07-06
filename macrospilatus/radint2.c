@@ -95,9 +95,12 @@ Die here. /*look above.*/
 		     mwIndex. Octave does. I do not have access to
 		     higher versions of Matlab, so I could not find a
 		     test for that. Please, someone, help.*/
+/*
 typedef int mwSize;
 typedef int mwIndex;
-#define strncasecmp strnicmp   /*lcc of Matlab 7 does not have
+ */
+/*
+ * #define strncasecmp strnicmp */   /*lcc of Matlab 7 does not have
                                 strncasecmp.  Octave, however does not
                                 have strnicmp. :-(*/
 #endif
