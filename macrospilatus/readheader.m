@@ -50,7 +50,12 @@ function header = readheader(filename,fsn,fileend)
 % Day    The day of measurement
 % Hour   The hour of measurement
 % Minutes   The minutes of hour of measurement
-% 
+%
+% Extra data fields added by the macro (not present in the file):
+% Analysis_dir (directory to save output files under, read from B1_ANALYSIS_DIR)
+% Data_dir (directory where the data is located, read from B1_DATA_DIR)
+% Images_dir (directory where the images are located, read from B1_IMAGES_DIR)
+%
 % Can also be used with three input parameters:
 % function header = readheader(filename,fsn,fileend)
 % 
@@ -59,6 +64,7 @@ function header = readheader(filename,fsn,fileend)
 % Edited 27.11.2007, added changes in title (UV)
 % Edited 19.3.2008, added year, month, day, hours, minutes of measurement
 %                 event (UV)
+% Edited 07.06.2011: Read directory information from globals (JBF)
 
 if(nargin==3) % if name is given in parts, try to guess
      name = sprintf('%s%05d%s',filename,fsn,fileend);
@@ -203,3 +209,10 @@ header = setfield(header,'Current2',temp); % line 83, ring current at end
 linesread = 83;
 
 fclose(fid); % Close file
+
+% append fields from global variables (JBF 2011)
+
+global B1_ANALYSIS_DIR B1_DATA_DIR B1_IMAGES_DIR
+header = setfield(header, 'Analysis_dir', B1_ANALYSIS_DIR);
+header = setfield(header, 'Data_dir', B1_DATA_DIR);
+header = setfield(header, 'Images_dir', B1_IMAGES_DIR);
