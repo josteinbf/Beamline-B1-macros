@@ -29,15 +29,22 @@ function [A,header,notfound,name] = read2dB1datapilatus(filename,files,fileend)
 n1 = 487;
 m1 = 619;
 
-fid = fopen(sprintf('%s\\processing\\settings.txt',pwd()));
-line1 = fgetl(fid);
-fclose(fid);
+fid = fopen(sprintf('%s/processing/settings.txt',pwd()));
+if (fid == -1)
+    % file not found, default to 1M pilatus
+    disp('warning: settings.txt not found, using pilatus 1M by default');
+    line1 = '1M';
+else
+    line1 = fgetl(fid);
+    fclose(fid);
+end
+
 if(strcmp('300k',line1))
     detectortype = 300;
 elseif(strcmp('1M',line1) || strcmp('1m',string(line1)))
     detectortype = 1000;
 end;
-CopyToDir = sprintf('%s\\data1\\',pwd());
+CopyToDir = sprintf('%s/data1/',pwd());
 projectname = CopyToDir(18:(end-7));
 
 nr = size(files);
