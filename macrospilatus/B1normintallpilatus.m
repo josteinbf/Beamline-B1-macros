@@ -108,6 +108,10 @@ else
 end;
 % Read in calibrated energy
 paramm = readlogfilepilatus(sprintf('intnorm%d.log',fsn1found(emptys(end,2)+1)));
-% Correct for Mythen data
-[qmythen,tthmythen] = qfrompixelsizeB1(mythendistance-distminus,0.05,paramm.EnergyCalibrated,mythenpixelshift+[0:1279]);
-mythennormint('waxs_',fsn1found(emptys(end,2):end),qmythen,tthmythen,'angle');
+if (isstruct(paramm))
+    % Correct for Mythen data
+    [qmythen,tthmythen] = qfrompixelsizeB1(mythendistance-distminus,0.05,paramm.EnergyCalibrated,mythenpixelshift+[0:1279]);
+    mythennormint('waxs_',fsn1found(emptys(end,2):end),qmythen,tthmythen,'angle');
+else
+    disp('warning: skipping last mythen frame')
+end
