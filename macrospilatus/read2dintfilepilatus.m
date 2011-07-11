@@ -14,19 +14,22 @@ function [A,Aerr,param]=read2dintfilepilatus(fsn)
 % Edited: 28.5.2009 AW deletes unzipped files afterwards
 % Edited: 2.6.2009 AW reads MAT files, if possible. If not, falls back to
 % the original operation (tries uncompressed .dat file, .dat.gz, .dat.zip)
+
+global B1_ANALYSIS_DIR
+
 counter=1;
 for i = 1:length(fsn);
    status=0; % status==1 means files are successfully loaded
    % first try to load a MAT file
-   name = sprintf('int2dnorm%d.mat',fsn(i));
+   name = sprintf('%s/int2dnorm%d.mat', B1_ANALYSIS_DIR, fsn(i));
    if exist(name,'file')
        tmp=load(name);
        A(:,:,counter)=tmp.Intensity;
        Aerr(:,:,counter)=tmp.Error;
        status=1;
    else % if mat file does not exist, try ascii
-       name = sprintf('int2dnorm%d.dat',fsn(i));
-       nameerr = sprintf('err2dnorm%d.dat',fsn(i));
+       name = sprintf('%s/int2dnorm%d.dat', B1_ANALYSIS_DIR, fsn(i));
+       nameerr = sprintf('%s/err2dnorm%d.dat', B1_ANALYSIS_DIR, fsn(i));
        tmp=loadascii_optionallyzipped(name);
        tmperr=loadascii_optionallyzipped(nameerr);
        if (~isempty(tmp) && ~isempty(tmperr)) % if both the intensity and the error matrix exists

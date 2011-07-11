@@ -18,7 +18,10 @@ function f = writelogfile(header,ori,thick,dclevel,realenergy,distance,mult,errm
 % Edited 6.5.2008 UV, corrected absolute primary intensity calculation
 % 19.6.2009 UV added rotations of sample stage
 
-name = sprintf('intnorm%d.log',getfield(header,'FSN'));
+global B1_ANALYSIS_DIR
+
+name = sprintf('%s/intnorm%d.log', B1_ANALYSIS_DIR, getfield(header,'FSN'));
+disp(['using logfile: ' name]);
 fid = fopen(name,'wt');
 
 fprintf(fid,'FSN:\t%d\n',getfield(header,'FSN'));

@@ -6,9 +6,11 @@ function sumandsaveB1pilatus(data,param,samplename)
 %
 % Created 18.12.2008 UV
 
+global B1_ANALYSIS_DIR;
+
 datasum = sumintegratedB1pilatus(data,param,samplename);
 for(k = 1:length(datasum))
-  name = sprintf('summed%d.dat',min(datasum(k).FSN));
+  name = sprintf('%s/summed%d.dat', B1_ANALYSIS_DIR, min(datasum(k).FSN));
   fid = fopen(name,'w');
   if(fid > -1)
     for(pp = 1:length(datasum(k).q))
@@ -20,7 +22,7 @@ for(k = 1:length(datasum))
     disp(sprintf('Unable to save data to file %s',name));
   end;
   % Write log-file
-  name = sprintf('summed%d.log',min(datasum(k).FSN));
+  name = sprintf('%s/summed%d.log', B1_ANALYSIS_DIR, min(datasum(k).FSN));
   fid = fopen(name,'w');
   if(fid > -1)
      fprintf(fid,'FSNs:');

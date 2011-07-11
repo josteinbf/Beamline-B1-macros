@@ -50,6 +50,8 @@ function reintegrateB1pilatus(fsn,mask,sddistance,qrange,samplenames)
 % Edited: 13.5.2010 AW: put in safety checks, so the program won't die if
 %     no measurement is found from a given sample or a given distance.
 
+global B1_ANALYSIS_DIR
+
 hc = 2*pi*1973.269601; % from qfrompixelsizeB1
 
 fsn=fsn(:);
@@ -167,7 +169,7 @@ for si=1:length(samplenames) % treat each sample one-by-one
                                      sdparams(i).BeamPosX,...
                                      sdparams(i).BeamPosY,...
                                      1-mask,sdqrange);
-           name = sprintf('intbinned%d.dat',sdparams(i).FSN);
+           name = sprintf('%s/intbinned%d.dat', B1_ANALYSIS_DIR, sdparams(i).FSN);
            fid = fopen(name,'w');
            if(fid > -1)
                  for(m = 2:length(q1)) % Don't save the first value because it's wrong, UV 29.10.2009

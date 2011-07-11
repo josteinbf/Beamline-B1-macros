@@ -5,9 +5,13 @@ function int1 = readintfile(filename)
 %
 % Created: 17.9.2007 UV
 
-fid = fopen(filename,'r');
+global B1_ANALYSIS_DIR
+
+
+name = sprintf('%s/%s', B1_ANALYSIS_DIR, filename);
+fid = fopen(name,'r');
 if(fid == -1)
-%  disp(sprintf('Could not find file %s.',filename))
+%  disp(sprintf('Could not find file %s.', name));
   int1 = 0;
   return
 else

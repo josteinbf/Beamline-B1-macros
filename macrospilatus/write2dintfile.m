@@ -25,20 +25,22 @@ function write2dintfile(A,Aerr,header,savemode)
 % Edited: 2.6.2009 AW from now on, this script saves by default both A and 
 % Aerr to int2dnorm%d.mat, unless savemode is defined.
 
+global B1_ANALYSIS_DIR
+
 if nargin<4
     savemode='mat';
 end
 savemode=upper(savemode);
 
 if strcmp(savemode,'MAT')
-    name=sprintf('int2dnorm%d.mat',header.FSN);
+    name=sprintf('%s/int2dnorm%d.mat', B1_ANALYSIS_DIR, header.FSN);
     Intensity=A;
     Error=Aerr;
     save(name,'-MAT','Intensity','Error');
 elseif strncmp(savemode,'ASCII',5)
-    name = sprintf('int2dnorm%d.dat',getfield(header,'FSN'));
+    name = sprintf('%s/int2dnorm%d.dat', B1_ANALYSIS_DIR, getfield(header,'FSN'));
     save(name,'-ascii','-double','-tabs','A');
-    nameerr = sprintf('err2dnorm%d.dat',getfield(header,'FSN'));
+    nameerr = sprintf('%s/err2dnorm%d.dat', B1_ANALYSIS_DIR, getfield(header,'FSN'));
     save(nameerr,'-ascii','-double','-tabs','Aerr');
 end
 if strcmp(savemode,'ASCII.ZIP')

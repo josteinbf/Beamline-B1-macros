@@ -14,9 +14,11 @@ function param = readlogfile(filename)
 % Edited 2.1.2008 UV, added monitor counts
 % 19.6.2009 UV added rotations of sample stage
 
-fid = fopen(filename,'r');
+global B1_ANALYSIS_DIR
+name = sprintf('%s/%s', B1_ANALYSIS_DIR, filename);
+fid = fopen(name,'r');
 if(fid == -1)
-%  disp(sprintf('Could not find file %s.',filename))
+  disp(sprintf('warning: pilatus log file %s not found.', name));
   param = 0;
   return
 else
