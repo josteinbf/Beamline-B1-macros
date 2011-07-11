@@ -121,7 +121,7 @@ posrefGGGC500 = 159.31;
      GCdata(:,1:3) = GC155; thickGC = 143*10^-4; % in cm, According to measurements in autumn 2007
      % Assumption has been made that the density of all samples is the same
  elseif(round(referencemeas)==round(posref500))
-     load calibrationfiles\GC500.dat;
+     load calibrationfiles/GC500.dat;
      GCdata(:,1:3) = GC500; thickGC = 508*10^-4;% in cm
  elseif(round(referencemeas)==round(posref1000))
      load calibrationfiles\GC1000.dat;
