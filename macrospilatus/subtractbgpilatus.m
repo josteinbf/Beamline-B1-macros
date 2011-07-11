@@ -42,7 +42,8 @@ end;
 notfound = 0;
 noemptys = find(FSNempty~=0);
 
-if(noemptys == 0)% In case background subtraction is not possible
+size_noemptys = size(noemptys);
+if (all(noemptys == 0) || (size_noemptys(1) == 0))% In case background subtraction is not possible
     disp('No backround to subtract!')
     return;
 end;
