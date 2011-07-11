@@ -44,8 +44,6 @@ if(strcmp('300k',line1))
 elseif(strcmp('1M',line1) || strcmp('1m',string(line1)))
     detectortype = 1000;
 end;
-CopyToDir = sprintf('%s/data1/',pwd());
-projectname = CopyToDir(18:(end-7));
 
 nr = size(files);
 % A = zeros(m1,n1,max(nr)); % Initialised to speed up reading.
@@ -53,7 +51,11 @@ nr = size(files);
 counter = 1; counternf = 1; notfound = 0;
 for(l = 1:max(nr))
    if(detectortype==1000)
-       name = sprintf('Z:\\%s\\%s%05d%s',projectname,filename,files(l),fileend);
+       %name = sprintf('Z:\\%s\\%s%05d%s',projectname,filename,files(l),fileend);
+       nameheader = sprintf('%s%05d.header',filename,files(l));
+       header_temp = readheader(nameheader); % always read header (need Images_dir)
+       name = sprintf('%s/%s%05d%s',header_temp.Images_dir, filename, files(l), fileend);
+       disp(name);
    elseif(detectortype == 300)
        name = fullfile(CopyToDir,sprintf('%s.%s',sprintf('%s%05d',filename,files(l),fileend)));       
    end;
@@ -72,7 +74,7 @@ for(l = 1:max(nr))
             A = zeros(sA1(1),sA1(2),max(nr));
             A(:,:,1) = A1;
             if(nargout>=2) % Read header only if it is requested.
-              header(counter) = readheader(nameheader); % Read header data
+              header(counter) = header_temp;
             end;
          end;
          if(counter ~= 1)
@@ -83,7 +85,7 @@ for(l = 1:max(nr))
                A(:,:,counter) = Atemp1.data';
             end;
             if(nargout>=2) % Read header only if it is requested.
-              header(counter) = readheader(nameheader); % Read header data
+              header(counter) = header_temp; % Read header data
             end;
          end;
          counter = counter + 1;
