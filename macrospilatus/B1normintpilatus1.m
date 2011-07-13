@@ -55,7 +55,7 @@ distancefromreferencetosample = 219; % mm, distance from reference sample holder
 % detshift = 47; % since 6.5.2011, 300k
 detshift = 46; % 1M, since 15.6.2011
 
-if(isstruct(thicknesses))  
+if(isstruct(thicknesses))
   % Contains or should contain structure variable 'thicknesses':
   sizethick = size(thicknesses);
   flagthick = 0; % Flag for thickness found from the struct thicknesses
@@ -71,7 +71,7 @@ end;
 %if(numel(energycalib)~=numel(energymeas) | numel(energycalib)<2)
 %   disp('STOPPING. Variables energycalib and energymeas should contain equal amount of\npoints and at least two points to be able to make the energy calibration.')
 %   return
-%end;    
+%end;
 if (numel(energycalib)~=numel(energymeas)) || (numel(energycalib)==0)
     error('Variables energycalib and energymeas should contain equal amounts of \npoints (and at least one).');
 end
@@ -82,7 +82,7 @@ if numel(energycalib)==1
         return
     end
 end
-        
+
 if(nargin < 13) % Integrate each matrix separately % AW updated parameter list and returned values % 29.6.2011 AW. fixed 14 -> 13
   [qs,ints,errs,areas,As,Aerrs,header,ori,injectionEB] = B1integratepilatus(fsn1,dclevel,sens,errorsens,mask,pri,energymeas,energycalib,distminus,detshift,fluorcorr);
 else
@@ -225,7 +225,7 @@ GCint=GCdata;
 %AW now we have intsbinGC, errsbinGC and qsbinGC, which are the measured GC
 % intensities. They are defined on the same q-scale as the reference data
 % (so there is no q-bin on this range, where no reference data exists).
-% Also, the q-bins where not enough intensity was measured (this means 
+% Also, the q-bins where not enough intensity was measured (this means
 % areasGC<GCareathreshold) were removed. Thus, to be short, qsbinGC == GCint(:,1).
 
 % this check was removed as Matlab 7.0 (R14) does not support assert.
@@ -313,7 +313,7 @@ pause
 counter = 1;
 for(k = 1:sizeints(2))
   if(k ~= referencenumber)
-    if(isstruct(thicknesses)) % If thicknesses are given in file       
+    if(isstruct(thicknesses)) % If thicknesses are given in file
       if(isfield(thicknesses,header(k).Title))
           thick = getfield(thicknesses,header(k).Title);
           disp(sprintf('Using thickness %f cm for sample %s',thick,header(k).Title));
@@ -354,7 +354,7 @@ for(k = 1:sizeints(2))
        writelogfilepilatus(header(k),ori(:,k),thick,dclevel,...
                            header(k).EnergyCalibrated,...
                            header(k).Dist,mult,errmult,referencesfsn,thickGC,injectionGC,injectionEB(k),pixelsize);
-       
+
        writeintfile(qout(:,counter),intout(:,counter),errout(:,counter),header(k));
        write2dintfile(Aout(:,:,counter),Aerrout(:,:,counter),header(k));
 %%% 29.5.2009 Added myhen UV, mythendistance 133.8320, mythenpixelshift = 300.3417
