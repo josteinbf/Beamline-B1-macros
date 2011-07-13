@@ -10,6 +10,8 @@ function sumanduniteB1pilatus(data,param,samplename,uniq,dist,q1,q2,samplename2)
 % 16.5.2009 UV: Added samplename2 in case name in short and long distance
 % measurements was different, put the same name if they were the same
 
+global B1_ANALYSIS_DIR
+
 datasum = sumintegratedB1pilatus(data,param,samplename);
 
 if(nargin>7)
@@ -47,7 +49,7 @@ for(h = 1:length(energies))
       if(long.Temperature/short.Temperature <1.1 | long.Temperature/short.Temperature <0.9) %#ok<BDSCA>
          disp(sprintf('Uniting at energy %f.',datasum(k).EnergyCalibrated))
          [f,multipl] = consaxs([short.q short.Intensity short.Error],[long.q long.Intensity long.Error],uniq, q1,q2,samplename);
-         name = sprintf('united%d.dat',min(datasum(k).FSN));
+         name = sprintf('%s/united%d.dat', B1_ANALYSIS_DIR, min(datasum(k).FSN));
          title(name);
          fid = fopen(name,'w');
          if(fid > -1)
@@ -60,7 +62,7 @@ for(h = 1:length(energies))
             disp(sprintf('Unable to save data to file %s',name));
          end;
          % Write log-file
-         name = sprintf('united%d.log',min(datasum(k).FSN));
+         name = sprintf('%s/united%d.log', B1_ANALYSIS_DIR, min(datasum(k).FSN));
          fid = fopen(name,'w');
          if(fid > -1)
             fprintf(fid,'FSNs:');
