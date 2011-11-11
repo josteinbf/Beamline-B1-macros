@@ -22,6 +22,8 @@ function [A,header,notfound,name] = read2dB1datapilatus(filename,files,fileend)
 % the file is not opened twice at the same time, which caused an error in
 % Matlab 7.0
 % 13.7.2010 UV Added reading of cbf files
+% 1.7.2011 AW Code-beautifying in the first part. Implemented the
+% possibility to load the data off-site, as this didn't work.
 
 % NOTE! This macro neads macros:
 % READHEADER.M
@@ -50,19 +52,46 @@ nr = size(files);
 
 counter = 1; counternf = 1; notfound = 0;
 for(l = 1:max(nr))
-   if(detectortype==1000)
-       %name = sprintf('Z:\\%s\\%s%05d%s',projectname,filename,files(l),fileend);
-       nameheader = sprintf('%s%05d.header',filename,files(l));
-       header_temp = readheader(nameheader); % always read header (need Images_dir)
-       name = sprintf('%s/%s%05d%s',header_temp.Images_dir, filename, files(l), fileend);
-       disp(name);
-   elseif(detectortype == 300)
-       name = fullfile(CopyToDir,sprintf('%s.%s',sprintf('%s%05d',filename,files(l),fileend)));       
-   end;
-    fid = fopen(name,'r');
+% local changes when merging AW's changes, discarded for now
+%<<<<<<< HEAD
+%   if(detectortype==1000)
+%       %name = sprintf('Z:\\%s\\%s%05d%s',projectname,filename,files(l),fileend);
+%       nameheader = sprintf('%s%05d.header',filename,files(l));
+%       header_temp = readheader(nameheader); % always read header (need Images_dir)
+%       name = sprintf('%s/%s%05d%s',header_temp.Images_dir, filename, files(l), fileend);
+%       disp(name);
+%   elseif(detectortype == 300)
+%       name = fullfile(CopyToDir,sprintf('%s.%s',sprintf('%s%05d',filename,files(l),fileend)));       
+%   end;
+%    fid = fopen(name,'r');
+%=======
+%1.7.2011. AW
+   purefilename=sprintf('%s%05d%s',filename,files(l),fileend);
+   
+    %if(detectortype==1000)
+    %    name = sprintf('Z:\\%s\\%s%05d%s',projectname,filename,files(l),fileend);
+    %elseif(detectortype == 300)
+    %    %1.7.2011. AW the next line was erroneous, it would produce files
+    %    %with two dots in their name, such as 'org_12345..tif', as fileend
+    %    %already contains a dot.
+    %    name = fullfile(CopyToDir,sprintf('%s.%s',sprintf('%s%05d',filename,files(l),fileend)));       
+    %end;
+   
+    % try to find the file on the matlab path first. This is essential for
+    % off-site usage of this macro.
+    name=which(purefilename);
+    %if not found, name will be ''. In that case try to find in the standard
+    %places (standard Pilatus directory).
+    if isempty(name)
+        name=[pilatusdir,filesep,purefilename];
+    end
     nameheader = sprintf('%s%05d.header',filename,files(l));
-     if(fid ~= -1)
-         fclose(fid); %AW 4.6.2009
+    % only try to open if the file exists.
+%    fid = fopen(name,'r'); % There is a better way than this
+%     if(fid ~= -1)
+%         fclose(fid); %AW 4.6.2009
+    if exist(name,'file')
+% end of AW 1.7.2011. No changes below this line on 1.7.2011.
          if(counter == 1) % Initialize matrix for speed up based on first image 13.7.2010 UV
             if(strcmp(fileend,'.tif'))
                A1 = imageread(name,'tif',[n1, m1]);  % Reading the matrix.
